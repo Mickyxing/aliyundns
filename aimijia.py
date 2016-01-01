@@ -1,8 +1,11 @@
 import aliyun.api
 import urllib2
+import json
 
 class DNS:
-    aliyun.setDefaultAppInfo("WIQF3T75AAcjjQ4p","d5ecsG9an8VjSxXDXLK3pxl10ZNQ0O")
+    jsonfile = file('key.json')
+    s = json.load(jsonfile)
+    aliyun.setDefaultAppInfo(s['id'],s['secret'])
     def getDNSIp(self):
         b = aliyun.api.Dns20150109DescribeDomainRecordInfoRequest()
         try:
@@ -35,7 +38,7 @@ if __name__ =='__main__':
     d = DNS()
     oldip = d.getDNSIp()
     newip = d.getMyIp()
-    print('oldIp:',oldip)
-    print('newIp:',newip)
     if(oldip != newip and oldip is not None):
+        print('oldIp:',oldip)
+        print('newIp:',newip)
         d.main(newip)
