@@ -42,7 +42,7 @@ def sign(accessKeySecret, parameters):
 
 def percent_encode(encodeStr):
     encodeStr = str(encodeStr)
-    res = urllib.quote(encodeStr,encode('utf8'),'')
+    res = urllib.quote(encodeStr,decode('utf8'),'')
     # res = urllib.quote(encodeStr.decode(sys.stdin.encoding).encode('utf8'), '')
     res = res.replace('+', '%20')
     res = res.replace('*', '%2A')
