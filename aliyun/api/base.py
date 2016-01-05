@@ -42,7 +42,8 @@ def sign(accessKeySecret, parameters):
 
 def percent_encode(encodeStr):
     encodeStr = str(encodeStr)
-    res = urllib.quote(encodeStr.decode(sys.stdin.encoding).encode('utf8'), '')
+    res = urllib.quote(encodeStr,encode('utf8'),'')
+    # res = urllib.quote(encodeStr.decode(sys.stdin.encoding).encode('utf8'), '')
     res = res.replace('+', '%20')
     res = res.replace('*', '%2A')
     res = res.replace('%7E', '~')
@@ -55,7 +56,7 @@ def mixStr(pstr):
         return pstr.encode('utf-8')
     else:
         return str(pstr)
-    
+
 class FileItem(object):
     def __init__(self,filename=None,content=None):
         self.filename = filename
@@ -69,7 +70,7 @@ class MultiPartForm(object):
         self.files = []
         self.boundary = "PYTHON_SDK_BOUNDARY"
         return
-    
+
     def get_content_type(self):
         return 'multipart/form-data; boundary=%s' % self.boundary
 
@@ -85,16 +86,16 @@ class MultiPartForm(object):
             mimetype = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
         self.files.append((mixStr(fieldname), mixStr(filename), mixStr(mimetype), mixStr(body)))
         return
-    
+
     def __str__(self):
         """Return a string representing the form data, including attached files."""
         # Build a list of lists, each containing "lines" of the
         # request.  Each part is separated by a boundary string.
         # Once the list is built, return a string where each
-        # line is separated by '\r\n'.  
+        # line is separated by '\r\n'.
         parts = []
         part_boundary = '--' + self.boundary
-        
+
         # Add the form fields
         parts.extend(
             [ part_boundary,
@@ -105,7 +106,7 @@ class MultiPartForm(object):
             ]
             for name, value in self.form_fields
             )
-        
+
         # Add the files to upload
         parts.extend(
             [ part_boundary,
@@ -118,7 +119,7 @@ class MultiPartForm(object):
             ]
             for field_name, filename, content_type, body in self.files
             )
-        
+
         # Flatten the list and add closing boundary marker,
         # then return CR+LF separated data
         flattened = list(itertools.chain(*parts))
@@ -135,14 +136,14 @@ class AliyunException(Exception):
         self.message = None
         self.host = None
         self.requestId = None
-    
+
     def __str__(self, *args, **kwargs):
         sb = "code=" + mixStr(self.code) +\
             " message=" + mixStr(self.message) +\
             " host=" + mixStr(self.host) +\
             " requestId=" + mixStr(self.requestId)
         return sb
-       
+
 class RequestException(Exception):
     #===========================================================================
     # 请求连接异常类
@@ -153,7 +154,7 @@ class RestApi(object):
     #===========================================================================
     # Rest api的基类
     #===========================================================================
-    
+
     def __init__(self, domain, port = 80):
         #=======================================================================
         # 初始化基类
@@ -166,14 +167,14 @@ class RestApi(object):
         if(aliyun.getDefaultAppInfo()):
             self.__access_key_id = aliyun.getDefaultAppInfo().accessKeyId
             self.__access_key_secret = aliyun.getDefaultAppInfo().accessKeySecret
-        
+
     def get_request_header(self):
         return {
                  'Content-type': 'application/x-www-form-urlencoded',
                  "Cache-Control": "no-cache",
                  "Connection": "Keep-Alive",
         }
-        
+
     def set_app_info(self, appinfo):
         #=======================================================================
         # 设置请求的app信息
@@ -182,19 +183,19 @@ class RestApi(object):
         #=======================================================================
         self.__access_key_id = appinfo.accessKeyId
         self.__access_key_secret = appinfo.accessKeySecret
-        
+
     def getapiname(self):
         return ""
-    
+
     def getMultipartParas(self):
         return [];
 
     def getTranslateParas(self):
         return {};
-    
+
     def _check_requst(self):
         pass
-    
+
     def getResponse(self, authrize=None, timeout=30):
         #=======================================================================
         # 获取response结果
@@ -220,9 +221,9 @@ class RestApi(object):
         signature = sign(self.__access_key_secret,parameters)
         parameters['Signature'] = signature
         url = "/?" + urllib.urlencode(parameters)
-        
+
         connection.connect()
-        
+
         header = self.get_request_header();
         if(self.getMultipartParas()):
             form = MultiPartForm()
@@ -233,14 +234,14 @@ class RestApi(object):
             body = str(form)
             header['Content-type'] = form.get_content_type()
         else:
-            body = None   
+            body = None
         connection.request(self.__httpmethod, url, body=body, headers=header)
         response = connection.getresponse();
         result = response.read()
         jsonobj = json.loads(result)
         return jsonobj
-    
-    
+
+
     def getApplicationParameters(self):
         application_parameter = {}
         for key, value in self.__dict__.iteritems():
