@@ -5,7 +5,7 @@ import json
 class DNS:
     jsonfile = file('key.json')
     s = json.load(jsonfile)
-    aliyun.setDefaultAppInfo(s['id'],s['secret'])
+    aliyun.setDefaultAppInfo(str(s["id"]),str(s["secret"]))
     def getDNSIp(self):
         b = aliyun.api.Dns20150109DescribeDomainRecordInfoRequest()
         try:
