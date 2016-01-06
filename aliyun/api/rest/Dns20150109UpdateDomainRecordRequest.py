@@ -7,7 +7,7 @@ class Dns20150109UpdateDomainRecordRequest(RestApi):
 		RestApi.__init__(self,domain, port)
 		self.Line = "default"
 		self.Priority = None
-		self.RR = "ssh"
+		self.RR = "home"
 		self.RecordId = "73609022"
 		self.TTL = None
 		self.Type = "A"
