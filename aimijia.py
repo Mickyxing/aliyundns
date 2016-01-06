@@ -3,7 +3,7 @@ import urllib2
 import json
 
 class DNS:
-    jsonfile = file('key.json')
+    jsonfile = file('./key.json')
     s = json.load(jsonfile)
     aliyun.setDefaultAppInfo(str(s['id']),str(s['secret']))
     def getDNSIp(self):
