@@ -10,7 +10,7 @@ class DNS:
         b = aliyun.api.Dns20150109DescribeDomainRecordInfoRequest()
         try:
             f = b.getResponse()
-            return (str(f['Value']))
+            return (str(f.get('Value')))
         except Exception,e:
             print('getDNSIp:',e)
             return None
