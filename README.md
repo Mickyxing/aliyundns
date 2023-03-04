@@ -5,3 +5,10 @@
 2.阿里云通过RecordId来区分每条域名解析记录，但是他们之前文档上对于这个参数的描述只写了“解析记录的ID”，没有写如何获取这条解析记录ID，我去我的阿里云控制台上找了好久都没找到，到后来我突然想到sdk上有获取域名信息的api，我试着用这个果然返回的信息里有这个字段，后来联系了他们客服，他们也说在控制台上没办法找到，也只有通过api获取域名信息才能找到，后来他们也在文档中注明了这个字段的获取方式。
 
 3.更新域名解析主要用到的是阿里云sdk包里aliyun/api/rest/Dns20150109UpdateDomainRecordRequest.py 方法，我为了偷懒直接在这个方法里写死了一些需要固定传入的参数，如果你要对自己的域名做解析的话记得去修改这些参数值。
+
+## 20230304 update：
+1.更新为使用阿里云python3接口，弃用原先下载sdk包调用形式
+
+2.新增日志输出
+
+参考文档：https://next.api.aliyun.com/api-tools/sdk/Alidns?version=2015-01-09&language=python-tea ， https://next.api.aliyun.com/api-tools/demo/Alidns/87dd2c5a-bb87-4269-8bb1-6e021be52123

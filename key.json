@@ -1,0 +1,7 @@
+{
+  "id":"aliyun-api-id",
+  "secret":"aliyun-api-secret",
+  "domain": "域名",
+  "rr": "解析名",
+  "recordId": "现有解析id"
+}
